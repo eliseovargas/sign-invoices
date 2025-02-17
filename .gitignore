@@ -177,3 +177,6 @@ querys_test/
 
 # MongoDB querys files
 *.mongodb.js
+
+update_app.bat
+**/firmas/
