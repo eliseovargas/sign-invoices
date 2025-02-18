@@ -5,7 +5,22 @@ import re
 from constants import SignaturesNames
 
 
-def get_pdf_text(pdf_invoices: str):
+def get_pdf_text(pdf_invoices: str) -> tuple[str, int, float, float] | None:
+    """Function to extract the name of the
+    person responsible for the signature
+    of the invoice and the metadata of the pdf
+
+    Parameters
+    ----------
+    pdf_invoices : str
+        path of the pdf file
+
+    Returns
+    -------
+    tuple[str, int, float, float] | None
+        name of the person responsible for the signature
+        and position of the signature in the pdf
+    """
     with pdfplumber.open(pdf_invoices) as doc:
         number_pages = doc.pages
         page_signature = len(number_pages) - 1
@@ -26,7 +41,21 @@ def get_pdf_text(pdf_invoices: str):
         )
 
 
-def get_name_signature(name: str):
+def get_name_signature(name: str) -> str | None:
+    """Function to get the name of the image
+    of the person responsible for the signature
+
+    Parameters
+    ----------
+    name : str
+        name of the person responsible for the signature
+
+    Returns
+    -------
+    str | None
+        name of the image of the person responsible
+        for the signature
+    """
     name_image = next(
         (
             image
@@ -44,10 +73,30 @@ def add_signature_to_pdf(
     pdf_output: str,
     signature: str,
     page: int,
-    x_postion: int,
-    y_position: int,
+    x_postion: float,
+    y_position: float,
     scale: float,
-):
+) -> None:
+    """Function to add the signature of the person
+    responsible for the invoice to the pdf
+
+    Parameters
+    ----------
+    pdf_input : str
+        path of the pdf file input
+    pdf_output : str
+        path of the pdf file output
+    signature : str
+        path of the image of the person responsible for the signature
+    page : int
+        page number where the signature
+    x_postion : float
+        position of the signature in the x-axis
+    y_position : float
+        position of the signature in the y-axis
+    scale : float
+        scale of the image signature
+    """
     doc_pdf = pymupdf.open(pdf_input)
     img_signature = pymupdf.open(signature)
     page_pdf = doc_pdf[page]

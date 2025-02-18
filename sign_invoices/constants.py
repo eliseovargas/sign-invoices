@@ -1,8 +1,8 @@
-# from enum import Enum
-
-
-# class SignaturesNames(str, Enum):
 class SignaturesNames:
+    """Class to store the names of the people
+    responsible for the signature of the invoices
+    """
+
     signatures_names: dict[str, str] = {
         "firma1": "ALEJANDRA ARIAS GONZALEZ",
         "firma2": "CAROLINA VASQUEZ NARANJO",

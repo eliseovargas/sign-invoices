@@ -22,8 +22,13 @@ def main_signs(input_folder: str, output_folder: str):
         output_pdf = pathlib.Path.joinpath(
             folder_invoices_with_sign, pathlib.Path(name_invoices)
         )
+        rprint(f"{name_invoices:=^50}")
         rprint(f"{' GETTING RESPONSIBLE SIGNATURE ':=^50}")
-        name_signature, page_signature, x_position, y_position = get_pdf_text(input_pdf)
+        res_text_pdf = get_pdf_text(input_pdf)
+        if not res_text_pdf:
+            rprint(f"{' RESPONSIBLE SIGNATURE ':-^50}")
+            continue
+        name_signature, page_signature, x_position, y_position = res_text_pdf
         rprint(f"{' GETTING NAME IMAGES ':=^50}")
         name_image = get_name_signature(name_signature)
         signature = pathlib.Path.joinpath(
@@ -36,15 +41,16 @@ def main_signs(input_folder: str, output_folder: str):
             page_signature,
             x_position + 50,
             y_position - 40,
-            0.7,
+            0.6,
         )
         rprint(f"{' SIGNATURE ADDED ':-^50}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="El script recibe la carpeta con las facturas sin firmar(input_folder) y la carpeta de destino donde se guardaran las facturas firmadas(output_folder)"
-    )
+    desc = "El script recibe la carpeta con las facturas sin firmar(input_folder) \
+        y la carpeta de destino donde se guardaran las facturas \
+            firmadas(output_folder)"
+    parser = argparse.ArgumentParser(description=desc)
     parser.add_argument(
         "--input_folder",
         type=str,
